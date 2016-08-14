@@ -1,0 +1,38 @@
+name: JAATP
+author: RoccoDeveloping
+version: 0.1BETA
+main: tk.roccodev.jaatp.JaatpMain
+commands:
+ workbench: 
+  description: Portable things
+  permission: jaatp.workbench
+ invsee: 
+  description: See inventory
+  permission: jaatp.invsee
+  usage: /invsee <PLAYER>
+ enderchest:
+  description: See EnderChest
+  permission: jaatp.enderchest
+  usage: /enderchest [PLAYER]
+ jaatp: 
+  description: Basic command
+ heal:
+  description: Heal Player
+  usage: /heal [PLAYER]
+  permission: jaatp.heal
+ feed:
+  description: Satisfy someone's hunger
+  usage: /feed [PLAYER]
+  permission: jaatp.feed
+ level:
+  description: Edit Experience
+  usage: /level <UP/DOWN> [PLAYER]
+  permission: jaatp.level
+ enchant:
+  description: Enchant items
+  usage: /enchant <ENCHANTMENT> [LEVEL]
+  permission: jaatp.enchant
+ repair:
+  description: Repair item(s)
+  usage: /repair [HAND/ALL]
+  permission: jaatp.repair
