@@ -3,13 +3,24 @@ package tk.roccodev.jaatp;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server.Spigot;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,13 +29,22 @@ import net.md_5.bungee.api.ChatColor;
 import tk.roccodev.jaatp.commands.ChangeItemStatsCmd;
 import tk.roccodev.jaatp.commands.ChangePlayerStatsCmd;
 import tk.roccodev.jaatp.commands.PortableCommand;
+import tk.roccodev.jaatp.commands.PunishCmdsCompleter;
+import tk.roccodev.jaatp.commands.PunishmentCommands;
 import tk.roccodev.jaatp.commands.SeeIntoOthers;
 import tk.roccodev.jaatp.config.MessageConfig;
+import tk.roccodev.jaatp.config.player.PlayerConfig;
+import tk.roccodev.jaatp.punishment.PunishPlayer;
 import tk.roccodev.jaatp.var.HideAntiCheat;
 import tk.roccodev.jaatp.var.Mentions;
 
-public class JaatpMain extends JavaPlugin{
+public class JaatpMain extends JavaPlugin implements Listener {
 	
+	public static JaatpMain instance;
+	
+	public JaatpMain(){
+		instance = this;
+	}
 	
 
 	@Override
@@ -42,6 +62,13 @@ public class JaatpMain extends JavaPlugin{
 		pm.registerEvents(new Mentions(), this);
 		pm.registerEvents(new PortableCommand(), this);
 		pm.registerEvents(new HideAntiCheat(), this);
+		pm.registerEvents(this, this);
+		
+		//Load folders
+		
+		File playersDir = new File(this.getDataFolder() + File.separator + "players");
+		if(!playersDir.exists()) playersDir.mkdir();
+		
 		
 		//Load configs
 		this.saveConfig();
@@ -67,6 +94,10 @@ public class JaatpMain extends JavaPlugin{
 		this.getCommand("level").setExecutor(new ChangePlayerStatsCmd());
 		this.getCommand("enchant").setExecutor(new ChangeItemStatsCmd());
 		this.getCommand("repair").setExecutor(new ChangeItemStatsCmd());
+		this.getCommand("ban").setExecutor(new PunishmentCommands());
+		this.getCommand("unban").setExecutor(new PunishmentCommands());
+		this.getCommand("unban").setTabCompleter(new PunishCmdsCompleter());
+		this.getCommand("tempban").setExecutor(new PunishmentCommands());
 		SimplePluginManager spm=(SimplePluginManager)this.getServer().getPluginManager();
         Field f;
 		try {
@@ -109,7 +140,77 @@ public class JaatpMain extends JavaPlugin{
 		return true;
 	}
 	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e){
+		if(!PlayerConfig.isRegistered(e.getPlayer())){
+			PlayerConfig.newPlayerConfig(e.getPlayer());
+		}
+		
+	}
 	
+	@EventHandler
+	public void onLogin(PlayerLoginEvent e){
+		Player p = e.getPlayer();
+		if(p.isBanned()){
+			FileConfiguration config = PlayerConfig.getPlayerConfig(p);
+			long millis = config.getLong("banExpire");
+			String reason = config.getString("banReason");
+		
+			
+			
+			
+			String message = "";
+			boolean expiry = MessageConfig.YOU_HAVE_BEEN_BANNED.contains("<EXPIRE>");
+			boolean b_reason = MessageConfig.YOU_HAVE_BEEN_BANNED.contains("<REASON>");
+			
+			if(millis <= System.currentTimeMillis()){
+				PunishPlayer.unbanPlayer(p);
+			}
+			
+			
+			if(expiry && b_reason){
+				if(millis != -1L){
+					message = MessageConfig.YOU_HAVE_BEEN_BANNED.replaceAll("<EXPIRE>", new Date(millis).toString()).replaceAll("<REASON>", reason);
+					}
+					else{
+						message = MessageConfig.YOU_HAVE_BEEN_BANNED.replaceAll("<EXPIRE>", "Permanent").replaceAll("<REASON>", reason);
+					}
+				
+			}
+			else if(expiry){
+				if(millis != -1L){
+				message = MessageConfig.YOU_HAVE_BEEN_BANNED.replaceAll("<EXPIRE>", new Date(millis).toString());
+				}
+				else{
+					message = MessageConfig.YOU_HAVE_BEEN_BANNED.replaceAll("<EXPIRE>", "Permanent");
+				}
+			}
+			else if(b_reason){
+				message = MessageConfig.YOU_HAVE_BEEN_BANNED.replaceAll("<REASON>", reason);
+			}
+			
+			e.setKickMessage(message);
+			e.disallow(Result.KICK_BANNED, message);
+		}
+	}
 	
+	public static Set<OfflinePlayer> matchPlayer(String name){
+		
+		
+		
+		
+		Set<OfflinePlayer> results = new HashSet<>();
+		for(OfflinePlayer p : Bukkit.getOfflinePlayers()){
+			
+			if(Bukkit.getOfflinePlayers().length == 0) return null;
+			if(p.getName().toUpperCase().contains(name.toUpperCase())){
+				results.add(p);
+			}
+		}
+		
+		if(results.isEmpty()) return null;
+		return results;
+		
+	}
 	
 }

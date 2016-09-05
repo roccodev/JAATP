@@ -36,3 +36,15 @@ commands:
   description: Repair item(s)
   usage: /repair [HAND/ALL]
   permission: jaatp.repair
+ ban:
+  description: Ban player
+  usage: /ban <PLAYER> [REASON]
+  permission: jaatp.ban
+ unban:
+  description: Unban player
+  usage: /unban <PLAYER>
+  permission: jaatp.unban
+ tempban:
+  description: Tempban player
+  usage: /tempban <PLAYER> <DURATION> [REASON]
+  permission: jaatp.tempban

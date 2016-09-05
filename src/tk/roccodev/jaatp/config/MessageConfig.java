@@ -23,6 +23,8 @@ public class MessageConfig {
 	public static String YOU_HEALED;
 	public static String YOU_FED;
 	public static String SUCCESFULLY_CHANGED_EXP;
+	public static String YOU_HAVE_BEEN_BANNED;
+	public static String YOU_HAVE_BEEN_MUTED;
 	public static String PREFIX;
 	
 	
@@ -42,6 +44,8 @@ public class MessageConfig {
 		JOIN_MESSAGE = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("join-message"));
 		QUIT_MESSAGE = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("quit-message"));
 		ERROR_CONSOLE_CANNOT_BE_HEALED = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("heal-error-console"));
+		YOU_HAVE_BEEN_BANNED = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("ban-notification"));
+		YOU_HAVE_BEEN_MUTED = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("mute-notification"));
 	}
 	
 	public static void def(){
@@ -59,6 +63,8 @@ public class MessageConfig {
 		config.addDefault("change-xp", "&cSuccesfully changed <PLAYER> experience");
 		config.addDefault("join-message", "&c<PLAYER> joined the game.");
 		config.addDefault("quit-message", "&c<PLAYER> left the game.");
+		config.addDefault("ban-notification", "&cYou have been banned!\nReason: &r<REASON>\n&cExpires in: &r<EXPIRE>");
+		config.addDefault("mute-notification", "&cYou have been muted!\nReason: &r<REASON>\n&cExpires in: &r<EXPIRE>");
 		
 		config.options().copyDefaults(true);
 		File msgConfig = new File(Bukkit.getPluginManager().getPlugin("JAATP").getDataFolder() + File.separator + "messages.yml");
