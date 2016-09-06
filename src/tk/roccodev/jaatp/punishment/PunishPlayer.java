@@ -1,9 +1,8 @@
 package tk.roccodev.jaatp.punishment;
 
-import java.security.Timestamp;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -111,6 +110,39 @@ public class PunishPlayer {
 		config.set("banned", 0);
 		config.set("banReason", "");
 		config.set("banExpire", 0L);
+	}
+	
+	public static void warnPlayer(OfflinePlayer p, String warn){
+		if(warn == null) warn = "NO_REASON";
+		FileConfiguration pconfig = PlayerConfig.getPlayerConfig(p);
+		if(!pconfig.contains("warns")){
+			pconfig.set("warns", new ArrayList<String>());
+			PlayerConfig.saveConfig(p, pconfig);
+		}
+		List<String> warns = pconfig.getStringList("warns");
+		warns.add(warn);
+		pconfig.set("warns", warns);
+		PlayerConfig.saveConfig(p, pconfig);
+		if(p.getPlayer() != null){
+			p.getPlayer().sendMessage(MessageConfig.YOU_HAVE_BEEN_WARNED.replaceAll("<REASON>", warn).replaceAll("<WARNS>", warns.size() + ""));
+			
+		}
+		
+		
+	}
+	
+	public static void delWarnPlayer(OfflinePlayer p, int index){
+		FileConfiguration pconfig = PlayerConfig.getPlayerConfig(p);
+		List<String> warns = pconfig.getStringList("warns");
+		warns.remove(index);
+		pconfig.set("warns", warns);
+		PlayerConfig.saveConfig(p, pconfig);
+	}
+	
+	public static List<String> getWarns(OfflinePlayer p){
+		
+		return PlayerConfig.getPlayerConfig(p).getStringList("warns");
+		
 	}
 	
 

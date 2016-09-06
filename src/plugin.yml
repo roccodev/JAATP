@@ -48,3 +48,15 @@ commands:
   description: Tempban player
   usage: /tempban <PLAYER> <DURATION> [REASON]
   permission: jaatp.tempban
+ warn:
+  description: Warn player
+  usage: /warn <PLAYER> [REASON]
+  permission: jaatp.warn
+ warns:
+  description: See player warns
+  usage: /warns <PLAYER>
+  permission: jaatp.warns
+ delwarn:
+  description: Delete warn
+  usage: /delwarn <PLAYER> <INDEX>
+  permission: jaatp.delwarn

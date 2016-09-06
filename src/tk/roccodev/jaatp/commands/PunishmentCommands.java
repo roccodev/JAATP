@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import tk.roccodev.jaatp.config.MessageConfig;
 import tk.roccodev.jaatp.punishment.PunishPlayer;
 
 public class PunishmentCommands implements CommandExecutor{
@@ -193,6 +195,46 @@ public class PunishmentCommands implements CommandExecutor{
 				
 				PunishPlayer.tempOffBan(p.getName(), sb.toString().trim() , System.currentTimeMillis() + duration);
 				}
+			}
+		}
+		else if(arg1.getName().equalsIgnoreCase("warn")){
+			if(arg3.length >= 1){
+				String reason = "NO_REASON";
+				if(arg3.length >= 2){
+					ArrayList<String> args = new ArrayList<>(Arrays.asList(arg3));
+					args.remove(0);
+					StringBuilder sb = new StringBuilder();
+					for(String s : args){
+						sb.append(s).append(" ");
+					}
+					reason = sb.toString().trim();
+				}
+				
+				OfflinePlayer op = Bukkit.getOfflinePlayer(arg3[0]);
+				
+				PunishPlayer.warnPlayer(op, reason);
+				
+				arg0.sendMessage(MessageConfig.SUCCESFULLY_WARNED.replaceAll("<PLAYER>", op.getName()).replaceAll("<REASON>", reason).replaceAll("<WARNS>", PunishPlayer.getWarns(op).size() + ""));
+				
+			}
+		}
+		else if(arg1.getName().equalsIgnoreCase("warns")){
+			if(arg3.length == 1){
+				arg0.sendMessage(ChatColor.RED + "WARNINGS:\n");
+				for(String s : PunishPlayer.getWarns(Bukkit.getOfflinePlayer(arg3[0]))){
+					arg0.sendMessage("- " + s);
+				}
+			}
+			else{
+				arg0.sendMessage("Usage: " + arg1.getUsage());
+			}
+		}
+		else if(arg1.getName().equalsIgnoreCase("delwarn")){
+			if(arg3.length == 2){
+				PunishPlayer.delWarnPlayer(Bukkit.getOfflinePlayer(arg3[0]), Integer.parseInt(arg3[1]));
+			}
+			else{
+				arg0.sendMessage("Usage: " + arg1.getUsage());
 			}
 		}
 		

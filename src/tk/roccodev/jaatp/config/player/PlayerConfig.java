@@ -2,6 +2,7 @@ package tk.roccodev.jaatp.config.player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,6 +34,7 @@ public class PlayerConfig {
 		config.addDefault("muteExpire", 0L);
 		config.addDefault("bannedBy", "");
 		config.addDefault("mutedBy", "");
+		config.addDefault("warns", new ArrayList<String>());
 		config.options().copyDefaults(true);
 		try {
 			config.save(f);

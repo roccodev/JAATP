@@ -13,21 +13,21 @@ public class HideAntiCheat implements Listener{
 	@EventHandler
 	public void HAC(PlayerCommandPreprocessEvent e){
 		
-		Bukkit.getLogger().info(Bukkit.getPluginManager().getPlugin("AAC").getName());
+		
 		
 		//Variables
 		Player p = e.getPlayer();
 		String cmd = e.getMessage();
 		
 		
-	
+	//TODO TabCompletion
 		
-		
+		//Check for NoCheatPlus
 		if(Bukkit.getPluginManager().getPlugin("NoCheatPlus") != null && Bukkit.getPluginManager().getPlugin("NoCheatPlus").isEnabled()){
 			if((cmd.toUpperCase().contains("NCP") || cmd.toUpperCase().contains("NOCHEATPLUS")) && !(p.hasPermission("nocheat.admin"))){
 				e.setCancelled(true);
 				if(JaatpMain.isSpigot()){
-					p.sendMessage(Bukkit.spigot().getConfig().getString("unknown-command"));
+					p.sendMessage(Bukkit.spigot().getConfig().getString("messages.unknown-command"));
 						
 				}
 				else{
@@ -42,7 +42,7 @@ public class HideAntiCheat implements Listener{
 			if(cmd.toUpperCase().contains("AAC") && !(p.hasPermission("AAC.admin"))){	
 				e.setCancelled(true);
 				if(JaatpMain.isSpigot()){
-					p.sendMessage(Bukkit.spigot().getConfig().getString("unknown-command"));
+					p.sendMessage(Bukkit.spigot().getConfig().getString("messages.unknown-command"));
 						
 				}
 				else{
@@ -56,7 +56,7 @@ public class HideAntiCheat implements Listener{
 			if(cmd.toUpperCase().contains("ANTICHEAT") && (!(p.hasPermission("anticheat.admin") || !(p.hasPermission("anticheat.mod"))))){
 				e.setCancelled(true);
 				if(JaatpMain.isSpigot()){
-					p.sendMessage(Bukkit.spigot().getConfig().getString("unknown-command"));
+					p.sendMessage(Bukkit.spigot().getConfig().getString("messages.unknown-command"));
 						
 				}
 				else{

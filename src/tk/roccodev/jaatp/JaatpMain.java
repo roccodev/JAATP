@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import tk.roccodev.jaatp.commands.ChangeItemStatsCmd;
 import tk.roccodev.jaatp.commands.ChangePlayerStatsCmd;
+import tk.roccodev.jaatp.commands.EggHatching;
 import tk.roccodev.jaatp.commands.PortableCommand;
 import tk.roccodev.jaatp.commands.PunishCmdsCompleter;
 import tk.roccodev.jaatp.commands.PunishmentCommands;
@@ -41,6 +43,9 @@ import tk.roccodev.jaatp.var.Mentions;
 public class JaatpMain extends JavaPlugin implements Listener {
 	
 	public static JaatpMain instance;
+	
+	// Hatching eggs is good for health. -> Pokemon GO
+	private static HashMap<Player, Integer> eggHatches = new HashMap<>();
 	
 	public JaatpMain(){
 		instance = this;
@@ -98,6 +103,9 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		this.getCommand("unban").setExecutor(new PunishmentCommands());
 		this.getCommand("unban").setTabCompleter(new PunishCmdsCompleter());
 		this.getCommand("tempban").setExecutor(new PunishmentCommands());
+		this.getCommand("warn").setExecutor(new PunishmentCommands());
+		this.getCommand("warns").setExecutor(new PunishmentCommands());
+		this.getCommand("delwarn").setExecutor(new PunishmentCommands());
 		SimplePluginManager spm=(SimplePluginManager)this.getServer().getPluginManager();
         Field f;
 		try {
@@ -134,6 +142,30 @@ public class JaatpMain extends JavaPlugin implements Listener {
 			if(args.length == 0){
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6===================================\n"
 						+ "&c&lJAATP - &cJust Another Admin Tools Plugin\n&aAuthor:&7 RoccoDeveloping\n&aVersion: &7" + this.getDescription().getVersion() + "\n&6==================================="));
+			}
+			if(args.length == 1){
+				if(args[0].equalsIgnoreCase("oink")){
+					if(sender instanceof Player){
+					if(!eggHatches.containsKey((Player)sender)){
+						eggHatches.put((Player) sender, 0);
+						
+					}
+					
+					if(EggHatching.hatchEgg((Player) sender, eggHatches.get((Player) sender))){
+						
+						
+						
+					}
+					else{
+						
+						int bf = eggHatches.get((Player) sender);
+						bf++;
+						eggHatches.remove((Player) sender);
+						eggHatches.put((Player) sender, bf);
+					}
+					
+					}
+				}
 			}
 		}
 		
