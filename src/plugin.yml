@@ -1,6 +1,6 @@
 name: JAATP
 author: RoccoDeveloping
-version: 0.1BETA
+version: 0.4
 main: tk.roccodev.jaatp.JaatpMain
 commands:
  workbench: 

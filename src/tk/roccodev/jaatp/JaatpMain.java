@@ -13,6 +13,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server.Spigot;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,6 +38,7 @@ import tk.roccodev.jaatp.commands.SeeIntoOthers;
 import tk.roccodev.jaatp.config.MessageConfig;
 import tk.roccodev.jaatp.config.player.PlayerConfig;
 import tk.roccodev.jaatp.punishment.PunishPlayer;
+import tk.roccodev.jaatp.updater.Updater;
 import tk.roccodev.jaatp.var.HideAntiCheat;
 import tk.roccodev.jaatp.var.Mentions;
 
@@ -60,6 +62,17 @@ public class JaatpMain extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		
+		//Check for update
+		getLogger().info("Checking for updates...");
+		if(Updater.checkForUpdate()){
+			ConsoleCommandSender ccs = Bukkit.getConsoleSender();
+			ccs.sendMessage(ChatColor.translateAlternateColorCodes('&', "Update found! Go to our Bukkit page or run &c/jaatp update&r to update!"));
+		}
+		else{
+			getLogger().info("No update found. Good!");
+		}
+		
 		
 		//Register listeners
 		
@@ -166,6 +179,25 @@ public class JaatpMain extends JavaPlugin implements Listener {
 					
 					}
 				}
+				else if(args[0].equalsIgnoreCase("update")){
+					if(sender.hasPermission("jaatp.update")){
+						
+						try {
+							Updater.updateForce();
+							sender.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Updated succesfully! Now restart or reload the server/plugin to apply changes.");
+						} catch (IOException e) {
+							
+							// TODO Auto-generated catch block
+							sender.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Whoops! It seems something went wrong when updating! See console for details.");
+							e.printStackTrace();
+						}
+						
+					}
+					else{
+						sender.sendMessage("You don't have permission");
+					}
+				}
+				
 			}
 		}
 		
