@@ -35,6 +35,7 @@ import tk.roccodev.jaatp.commands.PortableCommand;
 import tk.roccodev.jaatp.commands.PunishCmdsCompleter;
 import tk.roccodev.jaatp.commands.PunishmentCommands;
 import tk.roccodev.jaatp.commands.SeeIntoOthers;
+import tk.roccodev.jaatp.config.MainConfig;
 import tk.roccodev.jaatp.config.MessageConfig;
 import tk.roccodev.jaatp.config.player.PlayerConfig;
 import tk.roccodev.jaatp.punishment.PunishPlayer;
@@ -89,6 +90,9 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		
 		
 		//Load configs
+		MainConfig.config = this.getConfig();
+		MainConfig.def();
+		MainConfig.initVar();
 		this.saveConfig();
 		File msgConfig = new File(this.getDataFolder() + File.separator + "messages.yml");
 		if(!msgConfig.exists())
