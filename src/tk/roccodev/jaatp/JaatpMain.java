@@ -30,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import tk.roccodev.jaatp.commands.ChangeItemStatsCmd;
 import tk.roccodev.jaatp.commands.ChangePlayerStatsCmd;
-import tk.roccodev.jaatp.commands.EggHatching;
+
 import tk.roccodev.jaatp.commands.PortableCommand;
 import tk.roccodev.jaatp.commands.PunishCmdsCompleter;
 import tk.roccodev.jaatp.commands.PunishmentCommands;
@@ -168,18 +168,6 @@ public class JaatpMain extends JavaPlugin implements Listener {
 						
 					}
 					
-					if(EggHatching.hatchEgg((Player) sender, eggHatches.get((Player) sender))){
-						
-						
-						
-					}
-					else{
-						
-						int bf = eggHatches.get((Player) sender);
-						bf++;
-						eggHatches.remove((Player) sender);
-						eggHatches.put((Player) sender, bf);
-					}
 					
 					}
 				}
