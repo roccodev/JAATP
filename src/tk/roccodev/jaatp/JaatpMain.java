@@ -76,7 +76,7 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		
 		
 		//Register listeners
-		
+		// git
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new Mentions(), this);
 		pm.registerEvents(new PortableCommand(), this);
