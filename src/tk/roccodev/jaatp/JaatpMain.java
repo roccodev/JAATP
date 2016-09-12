@@ -28,6 +28,8 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
+import tk.roccodev.jaatp.chat.ChatFormat;
+import tk.roccodev.jaatp.commands.BroadcastCommands;
 import tk.roccodev.jaatp.commands.ChangeItemStatsCmd;
 import tk.roccodev.jaatp.commands.ChangePlayerStatsCmd;
 
@@ -64,6 +66,13 @@ public class JaatpMain extends JavaPlugin implements Listener {
 	@Override
 	public void onEnable() {
 		
+		if(Bukkit.getPluginManager().getPlugin("JtpUpgr") != null){
+			getLogger().info("Updated succesfully! Now removing the updater helper!");
+			PluginUtils.unload(Bukkit.getPluginManager().getPlugin("JtpUpgr"));
+			new File("plugins" + File.separator + "UpgraderJaatp.jar").delete();
+		}
+		
+		
 		//Check for update
 		getLogger().info("Checking for updates...");
 		if(Updater.checkForUpdate()){
@@ -81,6 +90,7 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		pm.registerEvents(new Mentions(), this);
 		pm.registerEvents(new PortableCommand(), this);
 		pm.registerEvents(new HideAntiCheat(), this);
+		pm.registerEvents(new ChatFormat(), this);
 		pm.registerEvents(this, this);
 		
 		//Load folders
@@ -107,7 +117,10 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		MessageConfig.assignStrings();
 		
 		//Register Commands
-		
+		Bukkit.getPluginCommand("nocheatplus").setTabCompleter(null); // Prevent users from tab-completing NoCheatPlus commands
+		Bukkit.getPluginCommand("anticheat").setTabCompleter(null);
+		Bukkit.getPluginCommand("aac").setTabCompleter(null);
+		this.getCommand("broadcast").setExecutor(new BroadcastCommands());
 		this.getCommand("workbench").setExecutor(new PortableCommand());
 		this.getCommand("invsee").setExecutor(new SeeIntoOthers());
 		this.getCommand("enderchest").setExecutor(new SeeIntoOthers());
@@ -175,8 +188,9 @@ public class JaatpMain extends JavaPlugin implements Listener {
 					if(sender.hasPermission("jaatp.update")){
 						
 						try {
+							sender.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Updated succesfully! Now reload/restart your server to apply changes.");
 							Updater.updateForce();
-							sender.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Updated succesfully! Now restart or reload the server/plugin to apply changes.");
+							
 						} catch (IOException e) {
 							
 							// TODO Auto-generated catch block

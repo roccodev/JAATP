@@ -2,6 +2,7 @@ name: JAATP
 author: RoccoDeveloping
 version: 0.4
 main: tk.roccodev.jaatp.JaatpMain
+depend: [WorldEdit]
 commands:
  workbench: 
   description: Portable things
@@ -60,3 +61,8 @@ commands:
   description: Delete warn
   usage: /delwarn <PLAYER> <INDEX>
   permission: jaatp.delwarn
+ broadcast:
+  description: Broadcast message
+  usage: /broadcast <MESSAGE>
+  permission: jaatp.broadcast
+  aliases: ["bc"]

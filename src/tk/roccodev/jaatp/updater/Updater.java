@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import com.google.common.io.Files;
 
 import tk.roccodev.jaatp.JaatpMain;
+import tk.roccodev.jaatp.PluginUtils;
 
 public class Updater {
 
@@ -87,6 +88,8 @@ public class Updater {
 		fos.getChannel().transferFrom(channel, 0, Long.MAX_VALUE);
 		
 		Files.copy(new File(JaatpMain.instance.getDataFolder() + File.separator + "tmp" + File.separator + "lastversion.jar"), new File("plugins" + File.separator + "JAATP.jar"));
+		
+		
 		
 		
 		
