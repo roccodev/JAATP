@@ -5,12 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import tk.roccodev.jaatp.chat.ChatUtils;
+import tk.roccodev.jaatp.config.MessageConfig;
 
 public class BroadcastCommands implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
-		if(arg1.getName().equalsIgnoreCase("bc") || arg2.equalsIgnoreCase("broadcast")){
+		if(arg2.equalsIgnoreCase("bc") || arg2.equalsIgnoreCase("broadcast")){
 			if(arg3.length >= 1){
 				
 				StringBuilder sb = new StringBuilder();
@@ -21,7 +22,7 @@ public class BroadcastCommands implements CommandExecutor {
 				}
 				
 				
-				ChatUtils.broadcastServerMessage(sb.toString().trim());
+				ChatUtils.broadcastServerMessage(MessageConfig.BC_PREFIX + sb.toString().trim());
 				
 				
 			}

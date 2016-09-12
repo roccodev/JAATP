@@ -27,12 +27,13 @@ public class MessageConfig {
 	public static String YOU_HAVE_BEEN_MUTED;
 	public static String YOU_HAVE_BEEN_WARNED;
 	public static String SUCCESFULLY_WARNED;
+	public static String BC_PREFIX;
 	public static String PREFIX;
 	
 	
 	public static void assignStrings(){
 		
-		
+		BC_PREFIX = ChatColor.translateAlternateColorCodes('&', config.getString("broadcast-prefix"));
 		PREFIX = ChatColor.translateAlternateColorCodes('&', config.getString("prefix"));
 		PERMISSION_DENIED = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("permission-denied"));
 		ERROR_PLAYER_NOT_FOUND = PREFIX + ChatColor.translateAlternateColorCodes('&', config.getString("player-not-found"));
@@ -54,6 +55,7 @@ public class MessageConfig {
 	
 	public static void def(){
 		
+		config.addDefault("broadcast-prefix", "&6&l[&c&lBroadcast&6&l]&r ");
 		config.addDefault("prefix", "&6&l[&c&lJAATP&6&l]&r ");
 		config.addDefault("permission-denied", "&cError: Permission denied");
 		config.addDefault("player-not-found", "&cError: Player not found");

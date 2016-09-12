@@ -1,8 +1,8 @@
 name: JAATP
 author: RoccoDeveloping
-version: 0.4
+version: 0.7
 main: tk.roccodev.jaatp.JaatpMain
-depend: [WorldEdit]
+softdepend: [PermissionsEx]
 commands:
  workbench: 
   description: Portable things

@@ -40,6 +40,7 @@ import tk.roccodev.jaatp.commands.SeeIntoOthers;
 import tk.roccodev.jaatp.config.MainConfig;
 import tk.roccodev.jaatp.config.MessageConfig;
 import tk.roccodev.jaatp.config.player.PlayerConfig;
+import tk.roccodev.jaatp.hook.HookManager;
 import tk.roccodev.jaatp.punishment.PunishPlayer;
 import tk.roccodev.jaatp.updater.Updater;
 import tk.roccodev.jaatp.var.HideAntiCheat;
@@ -65,6 +66,10 @@ public class JaatpMain extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
+		
+		//Init Hooks
+		HookManager.init();
+		
 		
 		if(Bukkit.getPluginManager().getPlugin("JtpUpgr") != null){
 			getLogger().info("Updated succesfully! Now removing the updater helper!");
@@ -117,9 +122,10 @@ public class JaatpMain extends JavaPlugin implements Listener {
 		MessageConfig.assignStrings();
 		
 		//Register Commands
-		Bukkit.getPluginCommand("nocheatplus").setTabCompleter(null); // Prevent users from tab-completing NoCheatPlus commands
-		Bukkit.getPluginCommand("anticheat").setTabCompleter(null);
-		Bukkit.getPluginCommand("aac").setTabCompleter(null);
+		if(Bukkit.getPluginCommand("nocheatplus") != null) Bukkit.getPluginCommand("nocheatplus").setTabCompleter(null); 
+		// Prevent users from tab-completing NoCheatPlus commands
+		if(Bukkit.getPluginCommand("anticheat") != null) Bukkit.getPluginCommand("anticheat").setTabCompleter(null); 
+		if(Bukkit.getPluginCommand("aac") != null) Bukkit.getPluginCommand("aac").setTabCompleter(null); 
 		this.getCommand("broadcast").setExecutor(new BroadcastCommands());
 		this.getCommand("workbench").setExecutor(new PortableCommand());
 		this.getCommand("invsee").setExecutor(new SeeIntoOthers());
